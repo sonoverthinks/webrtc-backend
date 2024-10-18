@@ -1,14 +1,26 @@
 const express = require("express");
 const app = express();
-const server = require("http").createServer(app);
-const cors = require("cors");
-const port = 3000;
+const authRouter = require("./auth");
+const dbConfig = require("./dbConfig");
 
-app.use(cors());
-const PORT = process.env.PORT || port;
+// Create database connection
+const mysql = require("mysql2/promise");
+const connection = mysql.createPool(dbConfig);
 
-app.get("/", (req, res) => {
-  res.send("Hello World there");
+// Middleware
+app.use(express.json());
+
+// Routes
+app.use("/api", authRouter);
+
+// Error handling
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(500).json({ message: "Internal Server Error" });
 });
 
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+// Start server
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
