@@ -103,6 +103,10 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/hello", (req, res) => {
+  res.send("Hello, world!");
+});
+
 // Start server
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
