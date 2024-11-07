@@ -56,34 +56,39 @@ router.post("/login", async (req, res) => {
         .json({ message: "Please provide username and password" });
     }
 
-    // Find user by username
-    const query = `
-        SELECT * FROM auth.user
-        WHERE username = ?;
-      `;
-    const values = [username];
-    const [rows] = await connection.execute(query, values);
-    // console.log("🚀 ~ router.post ~ rows:", rows);
+    // // Find user by username
+    // const query = `
+    //     SELECT * FROM auth.user
+    //     WHERE username = ?;
+    //   `;
+    // const values = [username];
+    // const [rows] = await connection.execute(query, values);
+    // // console.log("🚀 ~ router.post ~ rows:", rows);
 
-    if (rows.length === 0) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    // if (rows.length === 0) {
+    //   return res.status(401).json({ message: "Invalid credentials" });
+    // }
 
-    const user = rows[0];
-    // console.log("🚀 ~ router.post ~ user:", user);
+    // const user = rows[0];
+    // // console.log("🚀 ~ router.post ~ user:", user);
 
-    // Compare passwords using bcrypt
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    // // Compare passwords using bcrypt
+    // const isValidPassword = await bcrypt.compare(password, user.password);
 
-    if (!isValidPassword) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    // if (!isValidPassword) {
+    //   return res.status(401).json({ message: "Invalid credentials" });
+    // }
 
     // Create JWT payload
+    // const payload = {
+    //   id: user.id,
+    //   username: user.username,
+    //   callerID: user.callerID,
+    // };
     const payload = {
-      id: user.id,
-      username: user.username,
-      callerID: user.callerID,
+      // id: user.id,
+      username: username,
+      // callerID: user.callerID,
     };
 
     // Generate JWT token
